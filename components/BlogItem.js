@@ -17,6 +17,9 @@ import { getProviders, getSession, useSession } from "next-auth/react";
 const BlogItem = ({ blogTitle, blogBody, blogId }) => {
   const { data: session } = useSession();
   if (!session) return <Login providers={providers} />;
+  
+  
+
   const addToLibrary = async () => {
     const sessionUserId = session ? session.user.uid : 1;
     const docReference = doc(db, "users", `${sessionUserId}`);
