@@ -50,7 +50,9 @@ const Navbar = () => {
               Publish
             </button>
           )}
-          <a className="cursor-pointer" href="/library"><BookmarkIcon className="w-7 h-7" /></a>
+          <a className="cursor-pointer" href="/library">
+            <BookmarkIcon className="w-7 h-7" />
+          </a>
           <BellIcon className="w-7 h-7" />
           <div className="profile w-10 h-10  rounded-full  md:mr-4 mr-5 lg:mr-[15rem] ">
             <Menu>
@@ -64,48 +66,38 @@ const Navbar = () => {
                 />
               </Menu.Button>
               <Menu.Items className="flex flex-col bg-white transition ease-in-out delay-150 md:gap-3 w-[50vw] md:w-[10vw] top-[3.25rem] left-[10.25rem] absolute md:fixed md:left-[80%] z-10   md:mt-7 shadow-md items-center justify-center ">
-                <Menu.Item className="md:mt-3 mt-2  ">
-                  {({ active }) => (
-                    <a className={`${active && "bg-blue-500"}`} href="/">
+              <Menu.Item>
+                  {({  }) => (
+                    <a className='hover:font-extrabold' href="/">
                       Home
                     </a>
                   )}
                 </Menu.Item>
-                <Menu.Item className="  ">
-                  {({ active }) => (
-                    <a
-                      className={`${active && "bg-blue-500"}`}
-                      href="/createPost"
-                    >
-                      Create a Post
-                    </a>
-                  )}
-                </Menu.Item>
-                <Menu.Item className="">
-                  {({ active }) => (
-                    <a className={`${active && "bg-blue-500"}`} href="/myPost">
+                <Menu.Item>
+                  {({  }) => (
+                    <a className='hover:font-extrabold' href="/myPost">
                       My Posts
                     </a>
                   )}
                 </Menu.Item>
-                <Menu.Item className="">
-                  {({ active }) => (
-                    <a className={`${active && "bg-blue-500"}`} href="/">
-                      Account Settings
+                <Menu.Item>
+                  {({  }) => (
+                    <a className='hover:font-extrabold' href="/createPost">
+                      Create Post
                     </a>
                   )}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => (
-                    <a className={`${active && "bg-blue-500"}`} href="/">
+                  {({  }) => (
+                    <a className='hover:font-extrabold' href="/">
                       Documentation
                     </a>
                   )}
                 </Menu.Item>
                 <Menu.Item>
-                  {({ active }) => (
+                  {({  }) => (
                     <a
-                      className={`${active && "bg-blue-500"}`}
+                      className='hover:font-extrabold'
                       href="/"
                       onClick={signOut}
                     >

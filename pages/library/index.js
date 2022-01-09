@@ -26,7 +26,7 @@ const index = () => {
       const docRef = doc(db, "posts", blogId[i]);
       const docSnap = await getDoc(docRef);
 
-      tempArr.push(docSnap.data());
+      tempArr.push(docSnap);
     }
     setPosts(tempArr);
   }, [blogId]);
@@ -38,8 +38,8 @@ const index = () => {
       <Navbar />
       {posts.map((post) => (
         <BlogItem
-          blogTitle={post.title}
-          blogBody={post.postBody}
+          blogTitle={post.data().title}
+          blogBody={post.data().postBody}
           blogId={post.id}
         />
       ))}
