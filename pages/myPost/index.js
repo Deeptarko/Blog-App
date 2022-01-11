@@ -45,6 +45,7 @@ const index = ({providers}) => {
         <BlogItem
           blogTitle={post.data().title}
           blogBody={post.data().postBody}
+          blogId={post.id}
         />
       ))}
     </div>

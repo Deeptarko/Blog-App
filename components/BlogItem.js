@@ -24,6 +24,7 @@ const BlogItem = ({ blogTitle, blogBody, blogId }) => {
   if (!session) return <Login providers={providers} />;
 
   const [added, setAdded] = useState(false);
+  const [deleteActive,setDeleteActive]=useState(false);
 
   useEffect(async () => {
     const docRef = doc(db, "users", session.user.uid);
@@ -32,6 +33,13 @@ const BlogItem = ({ blogTitle, blogBody, blogId }) => {
     setAdded(blodIds.includes(blogId));
   }, []);
 
+  useEffect(async () => {
+    const docRef = doc(db, "posts", blogId);
+    const docSnap = await getDoc(docRef);
+    const idFromDatabase = docSnap.data().id;
+    setDeleteActive(idFromDatabase==session.user.uid);
+  }, []);
+  
   const addToLibrary = async () => {
     const sessionUserId = session ? session.user.uid : 1;
     const docReference = doc(db, "users", `${sessionUserId}`);
@@ -56,7 +64,7 @@ const BlogItem = ({ blogTitle, blogBody, blogId }) => {
   const deletePost = async () => {
     await deleteDoc(doc(db, "posts", blogId));
   };
- 
+
   return (
     <div className=" w-[100%] h-[15vh] md:ml-[5rem] md:h-[20vh] md:w-[90%] border-2 border-lime-500 flex mb-4">
       <div className="heading border-2 border-pink-400 w-[75%]">
@@ -73,7 +81,7 @@ const BlogItem = ({ blogTitle, blogBody, blogId }) => {
           )}
           {added && <CheckIcon className="w-7 h-7 cursor-pointer" />}
           <DotsVerticalIcon className="w-7 h-6 cursor-pointer" />
-          <TrashIcon className="w-7 h-6 cursor-pointer" onClick={deletePost} />
+          {deleteActive && (<TrashIcon className="w-7 h-6 cursor-pointer" onClick={deletePost} />)}
         </div>
       </div>
       <div className="blog-image w-[25%] h-[100%] relative m-0 p-0">

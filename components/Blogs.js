@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { db, storage } from "../firebase";
-
+import ReactPaginate from "react-paginate";
 import { onSnapshot, collection, query, orderBy } from "@firebase/firestore";
 import BlogItem from "../components/BlogItem";
 import UserWidget from "./UserWidget";
@@ -9,6 +9,25 @@ import { useRouter } from "next/router";
 const Blogs = () => {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const postsperPage = 4;
+  const postsVisited = pageNumber * postsperPage;
+  const pageCount = Math.ceil(posts.length / postsperPage);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  const displayPosts = posts
+    .slice(postsVisited, postsVisited + postsperPage)
+    .map((post) => (
+      <BlogItem
+        blogTitle={post.data().title}
+        blogBody={post.data().postBody}
+        blogId={post.id}
+      />
+    ));
+
   useEffect(
     () =>
       onSnapshot(
@@ -43,16 +62,21 @@ const Blogs = () => {
         </div>
 
         <div className="blog-content">
-          {posts.map((post) => (
-            <BlogItem
-              blogTitle={post.data().title}
-              blogBody={post.data().postBody}
-              blogId={post.id}
-            />
-          ))}
+          {displayPosts}
+          <ReactPaginate
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
         </div>
       </div>
-      <div className="border-2 border-red-600 lg:w-[40vw] lg:flex flex-col   min-h-[100vh]  hidden">
+      <div className="border-2 border-red-600 lg:w-[40vw] lg:flex flex-col   min-h-[93vh]  hidden">
         <div className="bg-[#E1F0FF] lg:w-[50%] lg:h-[35%] lg:mt-6 lg:ml-[3rem]">
           <h1 className="font-bold ml-3 mt-3">Writing on TechBlogs</h1>
           <p className="ml-3 mt-2 font-normal cursor-pointer">New Writer FAQ</p>
