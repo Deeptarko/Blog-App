@@ -45,7 +45,7 @@ const index = ({providers}) => {
   };
   return (
     <>
-      <Navbar />
+      
       <div className="add-features  w-10 h-10 absolute md:left-40 md:top-60 cursor-pointer">
         <PlusCircleIcon
           onClick={() => {

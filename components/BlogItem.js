@@ -7,6 +7,7 @@ import {
   TrashIcon,
   CheckIcon,
 } from "@heroicons/react/outline";
+import { useRouter } from "next/router";
 import {
   doc,
   updateDoc,
@@ -24,8 +25,9 @@ const BlogItem = ({ blogTitle, blogBody, blogId }) => {
   if (!session) return <Login providers={providers} />;
 
   const [added, setAdded] = useState(false);
-  const [deleteActive,setDeleteActive]=useState(false);
+  const [deleteActive, setDeleteActive] = useState(false);
 
+  const router = useRouter();
   useEffect(async () => {
     const docRef = doc(db, "users", session.user.uid);
     const docSnap = await getDoc(docRef);
@@ -37,51 +39,80 @@ const BlogItem = ({ blogTitle, blogBody, blogId }) => {
     const docRef = doc(db, "posts", blogId);
     const docSnap = await getDoc(docRef);
     const idFromDatabase = docSnap.data().id;
-    setDeleteActive(idFromDatabase==session.user.uid);
+    setDeleteActive(idFromDatabase == session.user.uid);
   }, []);
-  
-  const addToLibrary = async () => {
+
+  const manageLibrary = async (e) => {
+    e.stopPropagation();
     const sessionUserId = session ? session.user.uid : 1;
     const docReference = doc(db, "users", `${sessionUserId}`);
     const docSnap = await getDoc(docReference);
-
-    if (docSnap.exists()) {
-      const ref = await updateDoc(doc(db, "users", `${sessionUserId}`), {
-        username: session.user.name,
-        userid: session.user.uid,
-        bookmarks: arrayUnion(blogId),
-        userImg: session.user.image,
-      });
+    if (!added) {
+      if (docSnap.exists()) {
+        const ref = await updateDoc(doc(db, "users", `${sessionUserId}`), {
+          username: session.user.name,
+          userid: session.user.uid,
+          bookmarks: arrayUnion(blogId),
+          userImg: session.user.image,
+        });
+      } else {
+        const ref = await setDoc(doc(db, "users", `${sessionUserId}`), {
+          username: session.user.name,
+          userid: session.user.uid,
+          bookmarks: arrayUnion(blogId),
+          userImg: session.user.image,
+        });
+      }
     } else {
-      const ref = await setDoc(doc(db, "users", `${sessionUserId}`), {
-        username: session.user.name,
-        userid: session.user.uid,
-        bookmarks: arrayUnion(blogId),
-        userImg: session.user.image,
+      const ref = await updateDoc(doc(db, "users", `${sessionUserId}`), {
+        bookmarks: arrayRemove(blogId),
       });
     }
+    setAdded(!added);
   };
-  const deletePost = async () => {
+  const deletePost = async (e) => {
+    e.stopPropagation();
+    const sessionUserId = session ? session.user.uid : 1;
+    const docReference = doc(db, "users", `${sessionUserId}`);
+    const docSnap = await getDoc(docReference);
+    if (docSnap.exists()) {
+      const ref = await updateDoc(doc(db, "users", `${sessionUserId}`), {
+        bookmarks: arrayRemove(blogId),
+      });
+    }
     await deleteDoc(doc(db, "posts", blogId));
   };
 
   return (
-    <div className=" w-[100%] h-[15vh] md:ml-[5rem] md:h-[20vh] md:w-[90%] border-2 border-lime-500 flex mb-4">
+    <div
+      className=" w-[100%] h-[15vh] md:ml-[5rem] md:h-[20vh] md:w-[90%] border-2  cursor-pointer border-lime-500 flex mb-4"
+      onClick={() => router.push(`/${blogId}`)}
+    >
       <div className="heading border-2 border-pink-400 w-[75%]">
         <h1 className=" text-xl font-bold font-Pacifico ">{blogTitle}</h1>
-        <p className="font-lobster hidden md:flex"> {blogBody}</p>
+        {/* <p className="font-lobster hidden md:flex"> {blogBody}</p> */}
         <div className="blog-item-bottom flex gap-3  md:mt-5 ">
           <p className="">25 Dec</p>
           <p>12 min read</p>
           {!added && (
             <SaveIcon
               className="w-7 h-7 cursor-pointer"
-              onClick={addToLibrary}
+              onClick={manageLibrary}
             />
           )}
-          {added && <CheckIcon className="w-7 h-7 cursor-pointer" />}
+          {added && (
+            <CheckIcon
+              className="w-7 h-7 cursor-pointer"
+              onClick={manageLibrary}
+            />
+          )}
           <DotsVerticalIcon className="w-7 h-6 cursor-pointer" />
-          {deleteActive && (<TrashIcon className="w-7 h-6 cursor-pointer" onClick={deletePost} />)}
+          {deleteActive && (
+            <TrashIcon
+              className="w-7 h-6 cursor-pointer"
+              onClick={deletePost}
+            />
+          )}
         </div>
       </div>
       <div className="blog-image w-[25%] h-[100%] relative m-0 p-0">
