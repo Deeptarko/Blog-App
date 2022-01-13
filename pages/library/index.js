@@ -15,7 +15,7 @@ const Index = ({ providers }) => {
   const [publishBtn, setPublishBtn] = useRecoilState(publishBtnState);
   const [posts, setPosts] = useState([]);
   setPublishBtn(false);
-  useEffect(async () => {
+  useEffect( () => {
     async function fetchData() {
       const userId = session.user.uid;
       const docRef = doc(db, "users", userId);

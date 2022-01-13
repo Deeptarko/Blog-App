@@ -12,6 +12,7 @@ const Login = ({ providers }) => {
           width={150}
           height={150}
           objectFit="contain"
+          alt="Blog Icon"
         />
         <div className="">
           {Object.values(providers).map((provider) => (

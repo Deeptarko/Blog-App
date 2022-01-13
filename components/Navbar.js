@@ -87,6 +87,7 @@ const Navbar = () => {
                   width="70"
                   height="70"
                   className="rounded-full"
+                  alt="User Image"
                 />
               </Menu.Button>
               <Menu.Items className="flex flex-col bg-white transition ease-in-out delay-150 md:gap-3 w-[50vw] md:w-[10vw] top-[3.25rem] left-[10.25rem] absolute md:fixed md:left-[80%] z-10   md:mt-7 shadow-md items-center justify-center ">

@@ -20,14 +20,16 @@ import Alert from "../../components/Alert";
 import Login from '../../components/Login';
 const Index = ({providers}) => {
   const { data: session } = useSession();
-  if (!session) return <Login providers={providers} />;
+  
   const [btnState, setBtnState] = useRecoilState(publishBtnState);
   const [input, setInput] = useRecoilState(inputState);
   const [title, setTitle] = useRecoilState(titleState);
   const [postSaved, setPostSaved] = useRecoilState(postSavedState);
   const [displayOptions, setDisplayOptions] = useState(false);
   const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
+  
   const filePickerRef = useRef(null);
+  if (!session) return <Login providers={providers} />;
   setBtnState(true);
   const style = {
     height: "180px",

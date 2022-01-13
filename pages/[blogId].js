@@ -20,7 +20,7 @@ import { publishBtnState } from "../atoms/navbarAtom";
 import testImg from "../public/test-img.png";
 const BlogDisplayPage = ({providers}) => {
   const { data: session } = useSession();
-  if (!session) return <Login providers={providers} />;
+  
   const router = useRouter();
   const { blogId } = router.query;
   const [blogData, setBlogData] = useState({});
@@ -38,7 +38,7 @@ const BlogDisplayPage = ({providers}) => {
     }
     fetchData();
   }, [db]);
-
+  if (!session) return <Login providers={providers} />;
   return (
     <>
       <Navbar />
