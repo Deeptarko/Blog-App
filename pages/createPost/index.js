@@ -109,7 +109,7 @@ const Index = ({providers}) => {
             onKeyUp={resizeTextArea}
             name="post"
             placeholder="Write your blog"
-            className="w-full border-2 border-green-600 md:mt-6 font-3xl md:min-h-[60%] mt-4 min-h-[70%] overflow-hidden"
+            className="w-full  md:mt-6 font-3xl md:min-h-[60%] mt-4 min-h-[70%] overflow-hidden border-0 outline-none"
             style={style}
             onChange={(e) => {
               setInput(e.target.value);
