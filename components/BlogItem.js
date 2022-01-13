@@ -19,20 +19,22 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import app, { db, storage } from "../firebase";
+import Login from './Login';
 import { getProviders, getSession, useSession } from "next-auth/react";
 const BlogItem = ({ blogTitle, blogBody, blogId, imageUrl }) => {
   const { data: session } = useSession();
-  if (!session) return <Login providers={providers} />;
-
   const [added, setAdded] = useState(false);
   const [deleteActive, setDeleteActive] = useState(false);
 
   const router = useRouter();
-  useEffect(async () => {
+  useEffect( () => {
+   async function fetchData(){
     const docRef = doc(db, "users", session.user.uid);
     const docSnap = await getDoc(docRef);
     const blodIds = docSnap.data().bookmarks;
     setAdded(blodIds.includes(blogId));
+   }
+   fetchData();
   }, []);
 
   useEffect(async () => {
@@ -41,6 +43,9 @@ const BlogItem = ({ blogTitle, blogBody, blogId, imageUrl }) => {
     const idFromDatabase = docSnap.data().id;
     setDeleteActive(idFromDatabase == session.user.uid);
   }, []);
+  if (!session) return <Login providers={providers} />;
+
+  
 
   const manageLibrary = async (e) => {
     e.stopPropagation();

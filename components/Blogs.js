@@ -26,6 +26,7 @@ const Blogs = () => {
         blogBody={post.data().postBody}
         blogId={post.id}
         imageUrl={post.data().image}
+        key={post.id}
       />
     ));
 
@@ -119,6 +120,7 @@ const Blogs = () => {
               <UserWidget
                 name={user.data().username}
                 img={user.data().userImg}
+                key={user.data().username}
               />
             ))}
           </div>

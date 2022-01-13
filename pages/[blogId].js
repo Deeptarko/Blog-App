@@ -12,14 +12,21 @@ import {
     deleteDoc,
   } from "firebase/firestore";
   import app, { db, storage } from "../firebase";
+  import { useRecoilState, useRecoilValue } from "recoil";
+import { publishBtnState } from "../atoms/navbarAtom";
 const BlogDisplayPage = () => {
   const router = useRouter();
   const { blogId } = router.query;
   const [blogData,setBlogData]=useState({});
-  useEffect(async () => {
-    const docRef = doc(db, "posts", blogId);
+  const [publishBtn,setPublishBtn]=useRecoilState(publishBtnState);
+  setPublishBtn(false);
+  useEffect( () => {
+    async function fetchData(){
+      const docRef = doc(db, "posts", blogId);
     const docSnap = await getDoc(docRef);
     setBlogData(docSnap.data());
+    }
+    fetchData();
     
      
   }, []);

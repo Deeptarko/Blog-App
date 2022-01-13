@@ -12,8 +12,15 @@ import {
   selectedFileState,
 } from "../atoms/createPostAtom";
 import { db, storage } from "../firebase";
-import { addDoc, collection, serverTimestamp ,updateDoc,doc} from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
+import Link from "next/link";
 import Image from "next/image";
 import Alert from "./Alert";
 
@@ -21,10 +28,10 @@ const Navbar = () => {
   const { data: session } = useSession();
   const [btnState, setBtnState] = useRecoilState(publishBtnState);
   const [postSaved, setPostSaved] = useRecoilState(postSavedState);
-  const [selectedFile,setSelectedFile]=useRecoilState(selectedFileState);
+  const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
   const title = useRecoilValue(titleState);
   const input = useRecoilValue(inputState);
-  
+
   const sendPost = async () => {
     const docRef = await addDoc(collection(db, "posts"), {
       id: session.user.uid,
@@ -65,9 +72,11 @@ const Navbar = () => {
               Publish
             </button>
           )}
-          <a className="cursor-pointer" href="/library">
+          <Link href="/library">
+          <a className="cursor-pointer" >
             <BookmarkIcon className="w-7 h-7" />
           </a>
+          </Link>
           <BellIcon className="w-7 h-7" />
           <div className="profile w-10 h-10  rounded-full  md:mr-4 mr-5 lg:mr-[15rem] ">
             <Menu>
@@ -81,37 +90,35 @@ const Navbar = () => {
                 />
               </Menu.Button>
               <Menu.Items className="flex flex-col bg-white transition ease-in-out delay-150 md:gap-3 w-[50vw] md:w-[10vw] top-[3.25rem] left-[10.25rem] absolute md:fixed md:left-[80%] z-10   md:mt-7 shadow-md items-center justify-center ">
-              <Menu.Item>
-                  {({  }) => (
-                    <a className='hover:font-extrabold' href="/">
-                      Home
-                    </a>
+                <Menu.Item>
+                  {({}) => (
+                    <Link href="/">
+                      <a className="hover:font-extrabold">Home</a>
+                    </Link>
                   )}
                 </Menu.Item>
                 <Menu.Item>
-                  {({  }) => (
-                    <a className='hover:font-extrabold' href="/myPost">
-                      My Posts
-                    </a>
+                  {({}) => (
+                    <Link href="/myPost">
+                      <a className="hover:font-extrabold">My Posts</a>
+                    </Link>
                   )}
                 </Menu.Item>
                 <Menu.Item>
-                  {({  }) => (
-                    <a className='hover:font-extrabold' href="/createPost">
-                      Create Post
-                    </a>
+                  {({}) => (
+                    <Link href="/createPost">
+                      <a className="hover:font-extrabold">Create Post</a>
+                    </Link>
                   )}
                 </Menu.Item>
-                
+
                 <Menu.Item>
-                  {({  }) => (
-                    <a
-                      className='hover:font-extrabold'
-                      href="/"
-                      onClick={signOut}
-                    >
-                      Logout
-                    </a>
+                  {({}) => (
+                    <Link href="/">
+                      <a className="hover:font-extrabold" onClick={signOut}>
+                        Logout
+                      </a>
+                    </Link>
                   )}
                 </Menu.Item>
               </Menu.Items>

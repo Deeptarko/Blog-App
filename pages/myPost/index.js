@@ -17,14 +17,17 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { db, storage } from "../../firebase";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { publishBtnState } from "../../atoms/navbarAtom";
 const Index = ({providers}) => {
   const { data: session } = useSession();
-  if (!session) return <Login providers={providers} />;
   const [posts, setPosts] = useState([]);
+  const [publishBtn,setPublishBtn]=useRecoilState(publishBtnState);
+  setPublishBtn(false);
 
   
   const sessionUserId = session ? session.user.uid : "1";
-  console.log(sessionUserId);
+  
   useEffect(() => {
     const getBlogData = async () => {
       const q = query(
@@ -37,6 +40,8 @@ const Index = ({providers}) => {
     };
     getBlogData();
   }, [sessionUserId]);
+  if (!session) return <Login providers={providers} />;
+  
 
   return (
     <div>
@@ -46,6 +51,7 @@ const Index = ({providers}) => {
           blogTitle={post.data().title}
           blogBody={post.data().postBody}
           blogId={post.id}
+          key={post.id}
         />
       ))}
     </div>

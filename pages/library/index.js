@@ -5,19 +5,25 @@ import { db, storage } from "../../firebase";
 import Login from "../../components/Login";
 import Navbar from "../../components/Navbar";
 import BlogItem from "../../components/BlogItem";
+import { fetchData } from "next-auth/client/_utils";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { publishBtnState } from "../../atoms/navbarAtom";
 const Index = () => {
+  
   const { data: session } = useSession();
-  if (!session) return <Login providers={providers} />;
   const userId = session.user.uid;
   const [blogId, setBlogId] = useState([]);
-
+  const [publishBtn,setPublishBtn]=useRecoilState(publishBtnState);
   const [posts, setPosts] = useState([]);
-
+  setPublishBtn(false);
   useEffect(async () => {
-    const docRef = doc(db, "users", userId);
+    async function fetchData(){
+      const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
     // console.log(docSnap.data());
     setBlogId(docSnap.data().bookmarks);
+    }
+    fetchData();
   }, []);
 
   useEffect(async () => {
@@ -30,6 +36,10 @@ const Index = () => {
     }
     setPosts(tempArr);
   }, [blogId]);
+  if (!session) return <Login providers={providers} />;
+  
+
+
 
 
 
@@ -42,6 +52,7 @@ const Index = () => {
           blogBody={post.data().postBody}
           blogId={post.id}
           imageUrl={post.data().image}
+          key={post.id}
         />
       ))}
     </div>
