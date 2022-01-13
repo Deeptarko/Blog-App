@@ -17,7 +17,7 @@ import {
   titleState,
 } from "../../atoms/createPostAtom";
 import Alert from "../../components/Alert";
-const index = ({providers}) => {
+const Index = ({providers}) => {
   const [btnState, setBtnState] = useRecoilState(publishBtnState);
   const [input, setInput] = useRecoilState(inputState);
   const [title, setTitle] = useRecoilState(titleState);
@@ -130,4 +130,4 @@ export async function getServerSideProps(context) {
     },
   };
 }
-export default index;
+export default Index;

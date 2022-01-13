@@ -5,7 +5,7 @@ import { db, storage } from "../../firebase";
 import Login from "../../components/Login";
 import Navbar from "../../components/Navbar";
 import BlogItem from "../../components/BlogItem";
-const index = () => {
+const Index = () => {
   const { data: session } = useSession();
   if (!session) return <Login providers={providers} />;
   const userId = session.user.uid;
@@ -48,7 +48,7 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
 
 export async function getServerSideProps(context) {
   const providers = await getProviders();

@@ -17,7 +17,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { db, storage } from "../../firebase";
-const index = ({providers}) => {
+const Index = ({providers}) => {
   const { data: session } = useSession();
   if (!session) return <Login providers={providers} />;
   const [posts, setPosts] = useState([]);
@@ -69,6 +69,6 @@ export async function getServerSideProps(context) {
 
 
 
-export default index;
+export default Index;
 
 
