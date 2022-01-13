@@ -13,6 +13,7 @@ import { publishBtnState } from "../../atoms/navbarAtom";
 import {
   inputState,
   postSavedState,
+  selectedFileState,
   titleState,
 } from "../../atoms/createPostAtom";
 import Alert from "../../components/Alert";
@@ -22,7 +23,7 @@ const index = ({providers}) => {
   const [title, setTitle] = useRecoilState(titleState);
   const [postSaved, setPostSaved] = useRecoilState(postSavedState);
   const [displayOptions, setDisplayOptions] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
   const filePickerRef = useRef(null);
   setBtnState(true);
   const style = {
@@ -67,9 +68,9 @@ const index = ({providers}) => {
                   hidden
                 />
               </li>
-              <li>
+              {/* <li>
                 <EmojiHappyIcon className="rotate-90 md:rotate-0" />
-              </li>
+              </li> */}
             </ul>
           </div>
         )}

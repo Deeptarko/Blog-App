@@ -20,7 +20,7 @@ import {
 } from "firebase/firestore";
 import app, { db, storage } from "../firebase";
 import { getProviders, getSession, useSession } from "next-auth/react";
-const BlogItem = ({ blogTitle, blogBody, blogId }) => {
+const BlogItem = ({ blogTitle, blogBody, blogId, imageUrl }) => {
   const { data: session } = useSession();
   if (!session) return <Login providers={providers} />;
 
@@ -85,10 +85,10 @@ const BlogItem = ({ blogTitle, blogBody, blogId }) => {
 
   return (
     <div
-      className=" w-[100%] h-[15vh] md:ml-[5rem] md:h-[20vh] md:w-[90%] border-2  cursor-pointer border-lime-500 flex mb-4"
+      className=" w-[100%] h-[18vh] md:ml-[5rem] md:h-[20vh] md:w-[90%] border-2  cursor-pointer border-black flex mb-4"
       onClick={() => router.push(`/${blogId}`)}
     >
-      <div className="heading border-2 border-pink-400 w-[75%]">
+      <div className="heading  w-[75%]">
         <h1 className=" text-xl font-bold font-Pacifico ">{blogTitle}</h1>
         {/* <p className="font-lobster hidden md:flex"> {blogBody}</p> */}
         <div className="blog-item-bottom flex gap-3  md:mt-5 ">
@@ -115,9 +115,12 @@ const BlogItem = ({ blogTitle, blogBody, blogId }) => {
           )}
         </div>
       </div>
-      <div className="blog-image w-[25%] h-[100%] relative m-0 p-0">
-        <Image src={testImg} alt="me" layout="fill" />
-      </div>
+
+      {imageUrl && (
+        <div className="blog-image w-[25%] h-[100%] relative m-0 p-0">
+          <Image src={imageUrl} alt="me" layout="fill" />
+        </div>
+      )}
     </div>
   );
 };

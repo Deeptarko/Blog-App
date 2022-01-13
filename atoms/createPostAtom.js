@@ -12,3 +12,7 @@ export const postSavedState=atom({
     key:"postSavedState",
     default:false
 })
+export const selectedFileState=atom({
+    key:"selectedFileState",
+    default:null
+})

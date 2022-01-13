@@ -9,9 +9,11 @@ import {
   inputState,
   titleState,
   postSavedState,
+  selectedFileState,
 } from "../atoms/createPostAtom";
 import { db, storage } from "../firebase";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp ,updateDoc,doc} from "firebase/firestore";
+import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 import Image from "next/image";
 import Alert from "./Alert";
 
@@ -19,8 +21,10 @@ const Navbar = () => {
   const { data: session } = useSession();
   const [btnState, setBtnState] = useRecoilState(publishBtnState);
   const [postSaved, setPostSaved] = useRecoilState(postSavedState);
+  const [selectedFile,setSelectedFile]=useRecoilState(selectedFileState);
   const title = useRecoilValue(titleState);
   const input = useRecoilValue(inputState);
+  
   const sendPost = async () => {
     const docRef = await addDoc(collection(db, "posts"), {
       id: session.user.uid,
@@ -31,9 +35,20 @@ const Navbar = () => {
       postBody: input,
       timestamp: serverTimestamp(),
     });
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
+    if (selectedFile) {
+      await uploadString(imageRef, selectedFile, "data_url").then(async () => {
+        const downloadUrl = await getDownloadURL(imageRef);
+        await updateDoc(doc(db, "posts", docRef.id), {
+          image: downloadUrl,
+        });
+      });
+    }
     if (docRef) {
       setPostSaved(true);
     }
+    setSelectedFile(null);
   };
   return (
     <div className="flex h-[7vh] md:h-[10vh] md:shadow-md ">
@@ -87,13 +102,7 @@ const Navbar = () => {
                     </a>
                   )}
                 </Menu.Item>
-                <Menu.Item>
-                  {({  }) => (
-                    <a className='hover:font-extrabold' href="/">
-                      Documentation
-                    </a>
-                  )}
-                </Menu.Item>
+                
                 <Menu.Item>
                   {({  }) => (
                     <a

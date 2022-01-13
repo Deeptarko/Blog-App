@@ -25,6 +25,7 @@ const Blogs = () => {
         blogTitle={post.data().title}
         blogBody={post.data().postBody}
         blogId={post.id}
+        imageUrl={post.data().image}
       />
     ));
 
@@ -76,7 +77,7 @@ const Blogs = () => {
           />
         </div>
       </div>
-      <div className="border-2 border-red-600 lg:w-[40vw] lg:flex flex-col   min-h-[93vh]  hidden">
+      <div className=" lg:w-[40vw] lg:flex flex-col   min-h-[93vh]  hidden">
         <div className="bg-[#E1F0FF] lg:w-[50%] lg:h-[35%] lg:mt-6 lg:ml-[3rem]">
           <h1 className="font-bold ml-3 mt-3">Writing on TechBlogs</h1>
           <p className="ml-3 mt-2 font-normal cursor-pointer">New Writer FAQ</p>

@@ -40,7 +40,7 @@ const index = ({providers}) => {
 
   return (
     <div>
-      <Navbar />
+      
       {posts.map((post) => (
         <BlogItem
           blogTitle={post.data().title}

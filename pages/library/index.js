@@ -41,6 +41,7 @@ const index = () => {
           blogTitle={post.data().title}
           blogBody={post.data().postBody}
           blogId={post.id}
+          imageUrl={post.data().image}
         />
       ))}
     </div>
