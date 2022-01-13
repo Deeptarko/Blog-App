@@ -15,6 +15,7 @@ export default function Home({ providers }) {
 
   return (
     <>
+    <Navbar/>
       <Head>
         <link rel="shortcut icon" href="../public/blog-icon.jpeg" />
       </Head>

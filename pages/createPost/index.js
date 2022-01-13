@@ -17,7 +17,10 @@ import {
   titleState,
 } from "../../atoms/createPostAtom";
 import Alert from "../../components/Alert";
+import Login from '../../components/Login';
 const Index = ({providers}) => {
+  const { data: session } = useSession();
+  if (!session) return <Login providers={providers} />;
   const [btnState, setBtnState] = useRecoilState(publishBtnState);
   const [input, setInput] = useRecoilState(inputState);
   const [title, setTitle] = useRecoilState(titleState);
@@ -46,7 +49,7 @@ const Index = ({providers}) => {
   };
   return (
     <>
-      
+      <Navbar/>
       <div className="add-features  w-10 h-10 absolute md:left-40 md:top-60 cursor-pointer">
         <PlusCircleIcon
           onClick={() => {

@@ -44,6 +44,8 @@ const Index = ({providers}) => {
   
 
   return (
+    <>
+    <Navbar/>
     <div>
       
       {posts.map((post) => (
@@ -55,6 +57,7 @@ const Index = ({providers}) => {
         />
       ))}
     </div>
+    </>
   );
 };
 

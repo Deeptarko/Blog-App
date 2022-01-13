@@ -11,7 +11,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <RecoilRoot>
-        <Navbar/>
+       
         <Component {...pageProps} />
       </RecoilRoot>
     </SessionProvider>

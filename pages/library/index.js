@@ -8,22 +8,24 @@ import BlogItem from "../../components/BlogItem";
 import { fetchData } from "next-auth/client/_utils";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { publishBtnState } from "../../atoms/navbarAtom";
-const Index = () => {
-  
+const Index = ({ providers }) => {
   const { data: session } = useSession();
-  const userId = session.user.uid;
+
   const [blogId, setBlogId] = useState([]);
-  const [publishBtn,setPublishBtn]=useRecoilState(publishBtnState);
+  const [publishBtn, setPublishBtn] = useRecoilState(publishBtnState);
   const [posts, setPosts] = useState([]);
   setPublishBtn(false);
   useEffect(async () => {
-    async function fetchData(){
+    async function fetchData() {
+      const userId = session.user.uid;
       const docRef = doc(db, "users", userId);
-    const docSnap = await getDoc(docRef);
-    // console.log(docSnap.data());
-    setBlogId(docSnap.data().bookmarks);
+      const docSnap = await getDoc(docRef);
+      // console.log(docSnap.data());
+      setBlogId(docSnap.data().bookmarks);
     }
-    fetchData();
+    if (session) {
+      fetchData();
+    }
   }, []);
 
   useEffect(async () => {
@@ -37,15 +39,11 @@ const Index = () => {
     setPosts(tempArr);
   }, [blogId]);
   if (!session) return <Login providers={providers} />;
-  
-
-
-
-
 
   return (
+    <>
+    <Navbar/>
     <div>
-     
       {posts.map((post) => (
         <BlogItem
           blogTitle={post.data().title}
@@ -56,6 +54,7 @@ const Index = () => {
         />
       ))}
     </div>
+    </>
   );
 };
 
